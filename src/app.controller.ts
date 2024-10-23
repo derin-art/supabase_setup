@@ -1,4 +1,4 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Req, UseGuards, Post, Body } from '@nestjs/common';
 import { AppService } from './app.service';
 import { JwtAuthGuard } from './auth/guards/jwt.auth.guard';
 
@@ -19,4 +19,18 @@ export class AppController {
       "authenticated_user": req.user
     };
   }
+
+  @Get("/real")
+  @UseGuards(JwtAuthGuard)
+  test(@Req() req){
+    return this.appService.getTable()
+  }
+
+  @Post("/insert")
+  @UseGuards(JwtAuthGuard)
+  insert (@Req() req, @Body() body){
+    
+    return this.appService.addRecordRow(body)
+  }
+ 
 }
